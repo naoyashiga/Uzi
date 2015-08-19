@@ -2,6 +2,9 @@
 ![](https://raw.githubusercontent.com/naoyashiga/Uzi/master/capture.png)
 I created this at Interactive Coding Workshop in Tokyo.  
 
+# Demo Movie  
+https://vimeo.com/136685371
+
 # How to move  
 ```processing
 void walk() {
