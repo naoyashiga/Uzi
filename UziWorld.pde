@@ -16,7 +16,7 @@ void setup() {
 }
 
 void draw() {
-  fill(199,22,111, 10);
+  fill(199,22,111, 255);
   rect(0, 0, width, height);
 
   for (Uzi u : uzies) {
