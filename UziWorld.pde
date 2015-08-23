@@ -3,7 +3,7 @@ ArrayList<Uzi> uzies;
 
 void setup() {
   size(displayWidth, displayHeight);
-  int uziesSize = 100;
+  int uziesSize = 300;
 
   uzies = new ArrayList<Uzi>();
 

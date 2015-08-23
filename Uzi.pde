@@ -4,7 +4,8 @@ class Uzi extends BaseUziWithVector {
   Uzi() {
     angle = 0;
     r = 2;
-    location = new PVector(width / 2,height / 2);
+    // location = new PVector(width / 2,height / 2);
+    location = new PVector(random(width),random(height));
   }
 
   void render() {
@@ -31,5 +32,28 @@ class Uzi extends BaseUziWithVector {
     
     location.x = constrain(location.x, 0, width - 1);
     location.y = constrain(location.y, 0, height - 1);
+
+    boolean isTouching = false;
+
+    for (int i = 0; i < uzies.size(); i++) {
+        Uzi otherUzi = uzies.get(i);
+
+        if(otherUzi != this) {
+            float distance = dist(location.x, location.y, otherUzi.location.x, otherUzi.location.y);
+
+            if(distance - r - otherUzi.r < 50) {
+                isTouching = true;
+                break;
+            }
+        }
+    }
+
+
+    if(isTouching) {
+        location.x = 100;
+
+    } else {
+
+    }
   }
 }
