@@ -72,22 +72,35 @@ class Uzi extends BaseUziWithVector {
     return sum;
   }
 
-  // PVector cohesion(Uzi currentUzi) {
-  //   Float neighborDist = 50.0;
-  //   PVector sum = new PVector(0, 0);
+  PVector cohesion() {
+    Float neighborDist = 200.0;
+    PVector sum = new PVector(0, 0);
+    int count = 0
 
-  //   for (int i = 0; i < uzies.size(); i++) {
-  //       Uzi otherUzi = uzies.get(i);
+    for (int i = 0; i < uzies.size(); i++) {
+        Uzi otherUzi = uzies.get(i);
 
-  //       if(otherUzi != this) {
-  //           float distance = dist(location, otherUzi);
+        if(otherUzi != this) {
+            float distance = PVector.dist(location, otherUzi.location);
 
-  //           if(distance - currentUzi.r - otherUzi.r < neighborDist) {
-  //               sum.add(otherUzi.velocity);
-  //               break;
-  //           }
-  //       }
-  //   }
+            if(distance - currentUzi.r - otherUzi.r < neighborDist) {
+                sum.add(otherUzi.velocity);
+                count++;
+            }
+        }
+    }
 
-  // }
+    if (count > 0) {
+        sum.div((float)count);
+        sum.normalize();
+        sum.mult(2);
+
+        PVector steer = PVector.sub(sum, velocity);
+
+        return steer;
+    } else {
+        return new PVector(0, 0);
+    }
+
+  }
 }
