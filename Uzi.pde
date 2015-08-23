@@ -1,5 +1,7 @@
 class Uzi extends BaseUziWithVector {
   float angle;
+  float maxspeed;
+  float maxforce;
   
   Uzi() {
     angle = 0;
@@ -8,9 +10,12 @@ class Uzi extends BaseUziWithVector {
     location = new PVector(random(width),random(height));
 
 
-    scalarVelocity = 1;
+    scalarVelocity = 3;
     velocity.x = random(-scalarVelocity, scalarVelocity);
     velocity.y = random(-scalarVelocity, scalarVelocity);
+
+    maxspeed = 2;
+    maxforce = 0.03;
   }
 
   void render() {
@@ -40,6 +45,8 @@ class Uzi extends BaseUziWithVector {
     // velocity.mult(align(this));
 
     velocity.add(align());
+    velocity.add(cohesion());
+    velocity.add(separate());
 
     velocity.limit(1);
 
@@ -48,6 +55,44 @@ class Uzi extends BaseUziWithVector {
     
     location.x = constrain(location.x, 0, width - 1);
     location.y = constrain(location.y, 0, height - 1);
+
+  }
+
+  PVector separate() {
+    Float neighborDist = 10.0;
+    PVector steer = new PVector(0, 0);
+    int count = 0;
+
+    for (int i = 0; i < uzies.size(); i++) {
+        Uzi otherUzi = uzies.get(i);
+
+        if(otherUzi != this) {
+            float distance = PVector.dist(location, otherUzi.location);
+
+            if(distance - r - otherUzi.r < neighborDist) {
+                PVector diff = PVector.sub(location, otherUzi.location);
+                diff.normalize();
+                diff.div(distance);
+                steer.add(diff);
+                count++;
+            }
+        }
+    }
+
+
+    if(count > 0) {
+        steer.div((float)count);
+    }
+
+    if(steer.mag() > 0) {
+        steer.normalize();
+        steer.mult(maxspeed);
+        steer.sub(velocity);
+        steer.limit(maxforce);
+    }
+
+
+    return steer;
 
   }
 
@@ -72,9 +117,10 @@ class Uzi extends BaseUziWithVector {
     if (count > 0) {
         sum.div((float)count);
         sum.normalize();
-        sum.mult(2);
+        sum.mult(maxspeed);
 
         PVector steer = PVector.sub(sum, velocity);
+        steer.limit(maxforce);
 
         return steer;
     } else {
@@ -103,9 +149,10 @@ class Uzi extends BaseUziWithVector {
     if (count > 0) {
         sum.div((float)count);
         sum.normalize();
-        sum.mult(2);
+        sum.mult(maxspeed);
 
         PVector steer = PVector.sub(sum, velocity);
+        steer.limit(maxforce);
 
         return steer;
     } else {
