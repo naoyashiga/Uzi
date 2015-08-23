@@ -1,15 +1,15 @@
-Uzi[] uzies;
+ArrayList<Uzi> uzies;
 
-int uziesSize = 1000;
 
 void setup() {
   size(displayWidth, displayHeight);
+  int uziesSize = 100;
 
-  uzies = new Uzi[uziesSize];
+  uzies = new ArrayList<Uzi>();
 
   for (int i = 0; i < uziesSize; i++) {
-    Uzi p = new Uzi();
-    uzies[i] = p;
+    Uzi u = new Uzi();
+    uzies.add(u);
   }
 
   background(199,22,111);
@@ -19,12 +19,9 @@ void draw() {
   fill(199,22,111, 10);
   rect(0, 0, width, height);
 
-  for (int i = 0; i < uziesSize; i++) {
-    Uzi p = uzies[i];
-
-    p.walk();
-    p.render();
-
+  for (Uzi u : uzies) {
+    u.walk();
+    u.render();
   }
   
   // saveFrame("frames/######.tif");
